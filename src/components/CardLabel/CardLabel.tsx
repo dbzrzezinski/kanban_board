@@ -6,9 +6,9 @@ type CardLabelProps = {
 
 const CardLabel: FC<CardLabelProps> = ({ priority }): ReactElement => {
   const prioritySettings = [
-    { label: "Low Priority", color: "from-blue-700 to-blue-600" },
-    { label: "Medium Priority", color: "from-lime-800 to-lime-700" },
-    { label: "High Priority", color: "from-red-700 to-red-600" },
+    { label: "Low Priority", color: "from-blue-400 to-blue-500" },
+    { label: "Medium Priority", color: "from-emerald-400 to-emerald-500" },
+    { label: "High Priority", color: "from-red-400 to-red-500" },
   ];
 
   return (

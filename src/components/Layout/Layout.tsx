@@ -1,4 +1,4 @@
-import React, { ReactNode, FC } from "react";
+import { ReactNode, FC, ReactElement } from "react";
 
 import Topbar from "../Topbar/Topbar";
 import Sidebar from "../Sidebar/Sidebar";
@@ -8,7 +8,7 @@ type LayoutProps = {
   children?: ReactNode;
 };
 
-const Layout: FC<LayoutProps> = ({ children }) => {
+const Layout: FC<LayoutProps> = ({ children }): ReactElement => {
   return (
     <div className="min-w-full min-h-screen h-screen overflow-hidden bg-orange-100 pattern-bg__charlieBrown">
       <Topbar />

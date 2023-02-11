@@ -1,28 +1,21 @@
-import React, { FC } from "react";
+import React, { FC, ReactElement } from "react";
 
-import {
-  ChevronDownIcon,
-  PlusIcon,
-  EllipsisVerticalIcon,
-  ChatBubbleLeftEllipsisIcon,
-  PaperClipIcon,
-} from "@heroicons/react/24/outline";
+import { PlusIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
 import Card from "../Card/Card";
 
 import { Board } from "../../Types/KanbanBoard.types";
+import { DroppableProvided } from "@hello-pangea/dnd";
 
 type LaneProps = {
   laneData: Board;
+  droppableProvider: DroppableProvided;
 };
 
-const Lane: FC<LaneProps> = ({ laneData }) => {
+const Lane: FC<LaneProps> = ({ laneData, droppableProvider }): ReactElement => {
   return (
     <div className="bg-gray-100 rounded-md shadow-md flex flex-col relative overflow-hidden">
-      <span
-        className="w-full h-1 bg-gradient-to-r from-sky-700 to-sky-200
-                          absolute inset-x-0 top-0"
-      ></span>
+      <span className="w-full h-1 bg-gradient-to-r from-sky-700 to-sky-200 absolute inset-x-0 top-0"></span>
       <h4 className="p-3 flex justify-between items-center">
         <div className="text-2xl text-gray-600">
           {laneData.name}
@@ -41,8 +34,9 @@ const Lane: FC<LaneProps> = ({ laneData }) => {
         style={{ maxHeight: "calc(100vh - 290px)" }}
       >
         {laneData.items.map((item, index) => (
-          <Card cardItem={item} key={index} />
+          <Card cardItem={item} key={index} index={index} />
         ))}
+        {droppableProvider.placeholder}
       </div>
 
       <button
