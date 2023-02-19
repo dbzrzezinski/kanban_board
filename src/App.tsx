@@ -78,12 +78,12 @@ function App() {
   };
 
   return (
-    <div className="min-w-full min-h-screen h-screen overflow-hidden bg-blue-100">
+    <div className="min-w-full min-h-screen ">
       {isReady && (
         <Layout>
           <div className="p-10">
-            <div className="flex flex-initial justify-between">
-              <div className="flex items-center">
+            <div className="flex flex-initial justify-between flex-col lg:flex-row">
+              <div className="flex items-center justify-center md:justify-start">
                 <h4 className="text-3xl font-bold text-gray-600">
                   Kanban Board
                 </h4>
@@ -96,8 +96,8 @@ function App() {
                 </button>
               </div>
 
-              <div>
-                <ul className="flex space-x-3">
+              <div className="mt-8 lg:mt-0 ">
+                <ul className="flex space-x-3 justify-center md:justify-start">
                   {/* Show some random ids/user portraits */}
                   {users.map((person, index) => (
                     <li key={person.id}>
@@ -121,7 +121,7 @@ function App() {
 
             <DragDropContext onDragEnd={onDragEnd}>
               {showBoard && (
-                <div className="grid grid-cols-4 gap-5 my-5">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-5 my-5">
                   {boardData &&
                     boardData.map((laneData: Board, index: number) => (
                       <Droppable droppableId={index.toString()} key={index}>

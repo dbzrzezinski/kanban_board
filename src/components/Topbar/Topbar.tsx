@@ -4,8 +4,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 const Topbar = () => {
   return (
     <div
-      className="h-16 pl-24 fixed bg-gradient-to-r from-sky-700
-        to-sky-700 w-full flex items-center justify-between pr-10"
+      className="h-16 pl-28 lg:pl-24 fixed bg-gradient-to-r from-sky-700
+        to-sky-700 w-full flex items-center justify-between pr-14 lg:pr-10 z-10"
     >
       <div className="flex px-1 items-center">
         <MagnifyingGlassIcon className="w-5 h-5 text-white" />
