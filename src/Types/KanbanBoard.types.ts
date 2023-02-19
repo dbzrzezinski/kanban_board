@@ -1,5 +1,5 @@
 export type Item = {
-  id: number;
+  id: string;
   priority: number;
   title: string;
   chat: number;

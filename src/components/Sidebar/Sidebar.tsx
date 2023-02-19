@@ -6,7 +6,7 @@ const Sidebar = () => {
     <div className="fixed inset-y-0 left-0 bg-white w-16 opacity-7s0">
       <h1
         className="flex items-center justify-center text-2xl
-    h-16 bg-sky-800 text-white font-bold"
+    h-16 bg-sky-700 text-white font-bold"
       ></h1>
 
       <ul className="flex flex-col text-lg h-full">

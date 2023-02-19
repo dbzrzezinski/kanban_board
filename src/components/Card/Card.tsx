@@ -6,7 +6,13 @@ import {
 } from "@heroicons/react/24/outline";
 import CardLabel from "../CardLabel/CardLabel";
 import { Item } from "../../Types/KanbanBoard.types";
-import { Draggable } from "@hello-pangea/dnd";
+import {
+  Draggable,
+  DraggableStyle,
+  DraggableStateSnapshot,
+  DraggableProps,
+  DraggableProvidedDraggableProps,
+} from "@hello-pangea/dnd";
 
 type ItemProps = {
   cardItem: Item;
@@ -16,12 +22,12 @@ type ItemProps = {
 const Card: FC<ItemProps> = ({ cardItem, index }) => {
   const rotate = "rotate(-5deg)";
 
-  const getItemStyle = (isDragging, draggableStyle) => ({
-    ...draggableStyle,
-    opacity: isDragging ? ".7" : "1",
-
-    // transform: isDragging ? "scale(1.5)" : "",
-    // styles we need to apply on draggables
+  const getItemStyle = (
+    snapshot: DraggableStateSnapshot,
+    draggableStyle: DraggableProvidedDraggableProps
+  ) => ({
+    ...draggableStyle.style,
+    opacity: snapshot.isDragging ? ".7" : "1",
   });
 
   return (
@@ -35,10 +41,7 @@ const Card: FC<ItemProps> = ({ cardItem, index }) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          style={getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style
-          )}
+          style={getItemStyle(snapshot, provided.draggableProps)}
         >
           <div className="bg-white rounded-md p-3 m-3 shadow-md select-none">
             <CardLabel priority={cardItem.priority} />
@@ -60,17 +63,19 @@ const Card: FC<ItemProps> = ({ cardItem, index }) => {
                   <li key={assignee.avatar}>
                     <img
                       src={assignee.avatar}
-                      width="36"
-                      height="36"
-                      className="object-cover rounded-full "
+                      width="32"
+                      height="32"
+                      className="object-cover rounded-full"
+                      title="username"
                     />
                   </li>
                 ))}
 
                 <li>
                   <button
-                    className="border border-dashed flex items-center w-9 h-9 border-gray-500 justify-center
+                    className="border border-dashed flex items-center w-8 h-8 border-gray-500 justify-center
 rounded-full"
+                    title="Assign user "
                   >
                     <PlusIcon className="w-5 h-5 text-gray-500" />
                   </button>
