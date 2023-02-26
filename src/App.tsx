@@ -12,7 +12,6 @@ function App() {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [showBoard, setShowBoard] = useState<boolean>(true);
   const [showAddTaskFormLane, setShowAddTaskFormLane] = useState<number>(-1);
-  const [searchValue, setSearchValue] = useState<string>("");
   const [filteredBoardData, setFilteredBoardData] = useState<Board[]>();
 
   const STORAGE_KEY_BOARD_DATA = "kanban_board";
@@ -27,16 +26,20 @@ function App() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const item = localStorage.getItem(STORAGE_KEY_BOARD_DATA);
-
-      if (item !== null && Array.isArray(item) && item.length === 0) {
-        setBoardData(JSON.parse(item));
-        setFilteredBoardData(JSON.parse(item));
-      } else {
+      const fillWithMockData = false;
+      if (fillWithMockData) {
         // Fill board with Mock data if the board is empty or local storage was cleared
         //TODO: Remove this before deployment
         setBoardData(BoardDataMock);
         setFilteredBoardData(BoardDataMock);
+      } else {
+        const storageItem = JSON.parse(
+          localStorage.getItem(STORAGE_KEY_BOARD_DATA) || "[]"
+        );
+        if (Array.isArray(storageItem) && storageItem.length !== 0) {
+          setBoardData(storageItem);
+          setFilteredBoardData(storageItem);
+        }
       }
       setIsReady(true);
     }
@@ -48,7 +51,11 @@ function App() {
     }
   }, [boardData]);
 
-  const handleInputChange = (inputValue: string) => {
+  /**
+   * Filter
+   * @param inputValue string
+   */
+  const handleSearchInputChange = (inputValue: string) => {
     const boardCopy = boardData.slice();
 
     if (inputValue === "") {
@@ -65,7 +72,6 @@ function App() {
 
       return boardLane;
     });
-
     setFilteredBoardData(results);
   };
 
@@ -82,16 +88,13 @@ function App() {
         index,
         1
       );
-
       const destinationDropId = dragDropElement.destination.droppableId;
       const destinationIndex = dragDropElement.destination.index;
-
       newBoardData[parseInt(destinationDropId)].items.splice(
         destinationIndex,
         0,
         ...draggedItem
       );
-
       setBoardData(newBoardData);
       setFilteredBoardData(newBoardData);
     }
@@ -100,8 +103,10 @@ function App() {
   const handleSubmitNewTask = (item: Item) => {
     const newBoardData = [...boardData];
 
-    if (showAddTaskFormLane && newBoardData) {
+    if (showAddTaskFormLane !== -1 && newBoardData) {
       newBoardData[showAddTaskFormLane].items.push(item);
+      console.log(newBoardData);
+
       setBoardData(newBoardData);
       setFilteredBoardData(newBoardData);
     }
@@ -110,7 +115,7 @@ function App() {
   return (
     <div className="min-w-full min-h-screen ">
       {isReady && (
-        <Layout setSearchValue={handleInputChange}>
+        <Layout setSearchValue={handleSearchInputChange}>
           <div className="p-10">
             <div className="flex flex-initial justify-between flex-col lg:flex-row">
               <div className="flex items-center justify-center md:justify-start">

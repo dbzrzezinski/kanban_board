@@ -32,10 +32,7 @@ const Lane: FC<LaneProps> = ({
     }
   }, [showAddTaskFormLane]);
 
-  const handleKeypress = (
-    event: React.KeyboardEvent<HTMLTextAreaElement>,
-    laneIndex: number
-  ) => {
+  const handleKeypress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.code === "Escape") {
       setShowAddTaskFormLane!(-1);
     }
@@ -88,7 +85,7 @@ const Lane: FC<LaneProps> = ({
             className="border-gray-300 rounded w-full"
             rows={3}
             placeholder="task description"
-            onKeyDown={(e) => handleKeypress(e, laneIndex)}
+            onKeyDown={handleKeypress}
           ></textarea>
           <div
             onClick={() => setPriority(priority >= 2 ? 0 : priority + 1)}
