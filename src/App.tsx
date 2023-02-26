@@ -8,10 +8,12 @@ import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { Board, Item } from "./Types/KanbanBoard.types";
 
 function App() {
-  const [boardData, setBoardData] = useState<Board[]>();
+  const [boardData, setBoardData] = useState<Board[]>([]);
   const [isReady, setIsReady] = useState<boolean>(false);
   const [showBoard, setShowBoard] = useState<boolean>(true);
   const [showAddTaskFormLane, setShowAddTaskFormLane] = useState<number>(-1);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredBoardData, setFilteredBoardData] = useState<Board[]>();
 
   const STORAGE_KEY_BOARD_DATA = "kanban_board";
 
@@ -27,12 +29,14 @@ function App() {
     if (typeof window !== "undefined") {
       const item = localStorage.getItem(STORAGE_KEY_BOARD_DATA);
 
-      if (item !== null) {
+      if (item !== null && Array.isArray(item) && item.length === 0) {
         setBoardData(JSON.parse(item));
+        setFilteredBoardData(JSON.parse(item));
       } else {
         // Fill board with Mock data if the board is empty or local storage was cleared
         //TODO: Remove this before deployment
         setBoardData(BoardDataMock);
+        setFilteredBoardData(BoardDataMock);
       }
       setIsReady(true);
     }
@@ -44,9 +48,36 @@ function App() {
     }
   }, [boardData]);
 
+  const handleInputChange = (inputValue: string) => {
+    const boardCopy = boardData.slice();
+
+    if (inputValue === "") {
+      console.log("Board: ", boardCopy);
+      setFilteredBoardData(boardCopy);
+      return;
+    }
+
+    console.log("continue");
+
+    const results = boardCopy?.filter((boardLane) => {
+      boardLane.items = boardLane.items.filter((item) => {
+        if (item.title.toLowerCase().includes(inputValue.toLowerCase())) {
+          return item;
+        }
+      });
+
+      return boardLane;
+    });
+
+    setFilteredBoardData(results);
+  };
+
   const onDragEnd = (dragDropElement: DropResult) => {
-    if (!dragDropElement.destination) return;
-    let newBoardData = JSON.parse(JSON.stringify(boardData));
+    if (!dragDropElement.destination) {
+      return;
+    }
+
+    let newBoardData = [...boardData];
     let { droppableId, index } = dragDropElement.source;
 
     if (newBoardData) {
@@ -65,22 +96,24 @@ function App() {
       );
 
       setBoardData(newBoardData);
+      setFilteredBoardData(newBoardData);
     }
   };
 
   const handleSubmitNewTask = (item: Item) => {
-    const newBoardData = JSON.parse(JSON.stringify(boardData));
+    const newBoardData = [...boardData];
 
     if (showAddTaskFormLane && newBoardData) {
       newBoardData[showAddTaskFormLane].items.push(item);
       setBoardData(newBoardData);
+      setFilteredBoardData(newBoardData);
     }
   };
 
   return (
     <div className="min-w-full min-h-screen ">
       {isReady && (
-        <Layout>
+        <Layout setSearchValue={handleInputChange}>
           <div className="p-10">
             <div className="flex flex-initial justify-between flex-col lg:flex-row">
               <div className="flex items-center justify-center md:justify-start">
@@ -122,10 +155,10 @@ function App() {
             <DragDropContext onDragEnd={onDragEnd}>
               {showBoard && (
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-5 my-5">
-                  {boardData &&
-                    boardData.map((laneData: Board, index: number) => (
+                  {filteredBoardData &&
+                    filteredBoardData.map((laneData: Board, index: number) => (
                       <Droppable droppableId={index.toString()} key={index}>
-                        {(provided, snapshot) => (
+                        {(provided) => (
                           <div>
                             <div
                               {...provided.droppableProps}

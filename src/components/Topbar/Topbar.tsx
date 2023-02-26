@@ -1,7 +1,15 @@
-import React from "react";
+import React, { FC, ChangeEvent } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-const Topbar = () => {
+type TopbarProps = {
+  setSearchValue: (value: string) => void;
+};
+
+const Topbar: FC<TopbarProps> = ({ setSearchValue }) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
+
   return (
     <div
       className="h-16 pl-28 lg:pl-24 fixed bg-gradient-to-r from-sky-700
@@ -14,6 +22,7 @@ const Topbar = () => {
           placeholder="Search tasks ..."
           className=" bg-transparent border-0 text-white placeholder-gray-200
                 outline-none focus:ring-0 text-lg"
+          onChange={handleInputChange}
         />
       </div>
       <div className="flex space-x-6">

@@ -6,12 +6,16 @@ import "./layout.css";
 
 type LayoutProps = {
   children?: ReactNode;
+  setSearchValue: (value: string) => void;
 };
 
-const Layout: FC<LayoutProps> = ({ children }): ReactElement => {
+const Layout: FC<LayoutProps> = ({
+  children,
+  setSearchValue,
+}): ReactElement => {
   return (
     <div className="min-w-full min-h-screen h-screen overflow-y-scroll bg-orange-100 pattern-bg__charlieBrown">
-      <Topbar />
+      <Topbar setSearchValue={setSearchValue} />
       <Sidebar />
       <main className="pl-16 pt-16">{children}</main>
     </div>

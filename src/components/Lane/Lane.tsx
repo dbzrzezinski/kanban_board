@@ -1,10 +1,8 @@
 import React, { FC, ReactElement, useState } from "react";
 import { PlusIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-
 import Card from "../Card/Card";
 import { generateUUID } from "../../Helper/Util";
 import CardLabel from "../CardLabel/CardLabel";
-
 import { Board, Item } from "../../Types/KanbanBoard.types";
 import { DroppableProvided } from "@hello-pangea/dnd";
 
