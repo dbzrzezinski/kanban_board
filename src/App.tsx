@@ -52,12 +52,9 @@ function App() {
     const boardCopy = boardData.slice();
 
     if (inputValue === "") {
-      console.log("Board: ", boardCopy);
       setFilteredBoardData(boardCopy);
       return;
     }
-
-    console.log("continue");
 
     const results = boardCopy?.filter((boardLane) => {
       boardLane.items = boardLane.items.filter((item) => {
