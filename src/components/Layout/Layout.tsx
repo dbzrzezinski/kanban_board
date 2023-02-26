@@ -1,7 +1,6 @@
 import { ReactNode, FC, ReactElement } from "react";
 
 import Topbar from "../Topbar/Topbar";
-import Sidebar from "../Sidebar/Sidebar";
 import "./layout.css";
 
 type LayoutProps = {
@@ -16,8 +15,7 @@ const Layout: FC<LayoutProps> = ({
   return (
     <div className="min-w-full min-h-screen h-screen overflow-y-scroll bg-orange-100 pattern-bg__charlieBrown">
       <Topbar setSearchValue={setSearchValue} />
-      <Sidebar />
-      <main className="pl-16 pt-16">{children}</main>
+      <main className="pt-16">{children}</main>
     </div>
   );
 };
