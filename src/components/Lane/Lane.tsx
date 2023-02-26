@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from "react";
+import React, { FC, ReactElement, useState, useRef, useEffect } from "react";
 import { PlusIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import Card from "../Card/Card";
 import { generateUUID } from "../../Helper/Util";
@@ -11,7 +11,7 @@ type LaneProps = {
   droppableProvider: DroppableProvided;
   showAddTaskFormLane: number;
   submitNewTask: (item: Item) => void;
-  setShowAddTaskFormLane?: (form: number) => void;
+  setShowAddTaskFormLane: (form: number) => void;
   laneIndex: number;
 };
 
@@ -24,6 +24,13 @@ const Lane: FC<LaneProps> = ({
   laneIndex,
 }): ReactElement => {
   const [priority, setPriority] = useState(0);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [showAddTaskFormLane]);
 
   const handleKeypress = (
     event: React.KeyboardEvent<HTMLTextAreaElement>,
@@ -77,6 +84,7 @@ const Lane: FC<LaneProps> = ({
       {showAddTaskFormLane === laneIndex ? (
         <div className="p-3">
           <textarea
+            ref={textareaRef}
             className="border-gray-300 rounded w-full"
             rows={3}
             placeholder="task description"
@@ -92,9 +100,7 @@ const Lane: FC<LaneProps> = ({
       ) : (
         <button
           className="flex justify-center items-center my-3 space-x-2 text-gray-600 text-sm"
-          onClick={() => {
-            setShowAddTaskFormLane!(laneIndex);
-          }}
+          onClick={() => setShowAddTaskFormLane(laneIndex)}
         >
           <span>Add task</span>
           <PlusIcon className="w-4 h-4 text-gray-600" />
