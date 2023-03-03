@@ -6,6 +6,7 @@ import { ChevronUpIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Lane from "./components/Lane/Lane";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { Board, Item } from "./Types/KanbanBoard.types";
+import { canUseDOM } from "./Helper/Dom";
 
 function App() {
   const [boardData, setBoardData] = useState<Board[]>([]);
@@ -25,7 +26,7 @@ function App() {
   ];
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (canUseDOM()) {
       const fillWithMockData = false;
       if (fillWithMockData) {
         // Fill board with Mock data if the board is empty or local storage was cleared
