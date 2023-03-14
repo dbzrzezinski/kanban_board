@@ -14,7 +14,7 @@ function App() {
   const [showBoard, setShowBoard] = useState<boolean>(true);
   const [showAddTaskFormLane, setShowAddTaskFormLane] = useState<number>(-1);
   const [filteredBoardData, setFilteredBoardData] = useState<Board[]>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const STORAGE_KEY_BOARD_DATA = "kanban_board";
 
