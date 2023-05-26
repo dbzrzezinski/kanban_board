@@ -13,3 +13,8 @@ export type Board = {
   name: string;
   items: Item[];
 };
+
+export type User = {
+  id: number;
+  name: string;
+};
