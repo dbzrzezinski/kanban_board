@@ -1,10 +1,10 @@
-import React, { FC, ReactElement } from "react";
+import React, { ReactElement } from "react";
 
 type CardLabelProps = {
   priority: number;
 };
 
-const CardLabel: FC<CardLabelProps> = ({ priority }): ReactElement => {
+const CardLabel: React.FC<CardLabelProps> = ({ priority }): ReactElement => {
   const prioritySettings = [
     { label: "Low Prio", color: "from-blue-400 to-blue-500" },
     { label: "Medium Prio", color: "from-emerald-400 to-emerald-500" },

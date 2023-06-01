@@ -1,4 +1,4 @@
-import { ReactNode, FC, ReactElement } from "react";
+import React, { ReactNode, ReactElement } from "react";
 
 import Topbar from "../Topbar/Topbar";
 import "./layout.css";
@@ -8,7 +8,7 @@ type LayoutProps = {
   setSearchValue: (value: string) => void;
 };
 
-const Layout: FC<LayoutProps> = ({
+const Layout: React.FC<LayoutProps> = ({
   children,
   setSearchValue,
 }): ReactElement => {

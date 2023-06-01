@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React from "react";
 import {
   PlusIcon,
   ChatBubbleLeftEllipsisIcon,
@@ -19,7 +19,7 @@ type ItemProps = {
   index: number;
 };
 
-const Card: FC<ItemProps> = ({ cardItem, index }) => {
+const Card: React.FC<ItemProps> = ({ cardItem, index }) => {
   const rotate = "rotate(-5deg)";
 
   const getItemStyle = (
@@ -90,3 +90,8 @@ rounded-full"
 };
 
 export default Card;
+
+fetch("books")
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((error) => console.error(error));
