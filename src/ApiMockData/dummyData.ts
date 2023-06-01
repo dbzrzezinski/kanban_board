@@ -13,6 +13,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/20.jpg",
+            name: "Alex Ander",
           },
         ],
       },
@@ -25,6 +26,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/50.jpg",
+            name: "Peter Silie",
           },
         ],
       },
@@ -37,6 +39,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/20.jpg",
+            name: "Alex Ander",
           },
         ],
       },
@@ -54,6 +57,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/80.jpg",
+            name: "Anna Bolika",
           },
         ],
       },
@@ -66,6 +70,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/60.jpg",
+            name: "Max Mustermann",
           },
         ],
       },
@@ -83,6 +88,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/20.jpg",
+            name: "Alex Ander",
           },
         ],
       },
@@ -112,6 +118,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/50.jpg",
+            name: "Peter Silie",
           },
         ],
       },
@@ -124,6 +131,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/60.jpg",
+            name: "Max Mustermann",
           },
         ],
       },
@@ -136,6 +144,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/20.jpg",
+            name: "Alex Ander",
           },
         ],
       },
@@ -148,6 +157,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/50.jpg",
+            name: "Peter Silie",
           },
         ],
       },
@@ -160,6 +170,7 @@ export const ApiMockResponse: Board[] = [
         assignees: [
           {
             avatar: "https://randomuser.me/api/portraits/men/80.jpg",
+            name: "Anna Bolika",
           },
         ],
       },

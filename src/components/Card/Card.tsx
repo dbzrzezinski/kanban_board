@@ -66,7 +66,7 @@ const Card: React.FC<ItemProps> = ({ cardItem, index }) => {
                       width="32"
                       height="32"
                       className="object-cover rounded-full"
-                      title="username"
+                      title={assignee.name}
                     />
                   </li>
                 ))}

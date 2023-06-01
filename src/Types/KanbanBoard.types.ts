@@ -6,6 +6,7 @@ export type Item = {
   attachment: number;
   assignees: {
     avatar: string;
+    name: string;
   }[];
 };
 
