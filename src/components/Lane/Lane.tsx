@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState, useRef, useEffect } from "react";
+import React, { ReactElement, useState, useRef, useEffect } from "react";
 import { PlusIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import Card from "../Card/Card";
 import { generateUUID } from "../../Helper/Util";
@@ -15,7 +15,7 @@ type LaneProps = {
   laneIndex: number;
 };
 
-const Lane: FC<LaneProps> = ({
+const Lane: React.FC<LaneProps> = ({
   laneData,
   droppableProvider,
   showAddTaskFormLane,

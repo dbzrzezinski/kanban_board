@@ -7,7 +7,15 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "tsc"
+    "typescript": "tsc --project tsconfig.json --noEmit",
+    "lint": "eslint src --color",
+    "format": "prettier --write './src/**/*.{js,jsx,ts,tsx}' --config ./.prettierrc",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "pnpm run lint"
+    ]
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.2.0",
@@ -22,12 +30,21 @@
     "@types/node": "^18.16.14",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
+    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@typescript-eslint/parser": "^5.59.9",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.14",
     "child_process": "^1.0.2",
+    "eslint": "^8.41.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
     "fs": "0.0.1-security",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
     "path": "^0.12.7",
     "postcss": "^8.4.23",
+    "prettier": "^2.8.8",
     "purgecss": "^5.0.0",
     "react-router-dom": "^6.11.2",
     "tailwindcss": "^3.3.2",

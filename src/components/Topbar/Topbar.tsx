@@ -1,11 +1,13 @@
-import React, { FC, ChangeEvent } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import React, { ChangeEvent } from 'react';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+
+import { auth } from '../../services/AuthentificationService';
 
 type TopbarProps = {
   setSearchValue: (value: string) => void;
 };
 
-const Topbar: FC<TopbarProps> = ({ setSearchValue }) => {
+const Topbar: React.FC<TopbarProps> = ({ setSearchValue }) => {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
@@ -13,8 +15,7 @@ const Topbar: FC<TopbarProps> = ({ setSearchValue }) => {
   return (
     <div
       className="h-16 pl-28 lg:pl-24 fixed bg-gradient-to-r from-sky-700
-        to-sky-700 w-full flex items-center justify-between pr-14 lg:pr-10 z-10"
-    >
+        to-sky-700 w-full flex items-center justify-between pr-14 lg:pr-10 z-10">
       <div className="flex px-1 items-center">
         <MagnifyingGlassIcon className="w-5 h-5 text-white" />
         <input
@@ -27,9 +28,9 @@ const Topbar: FC<TopbarProps> = ({ setSearchValue }) => {
       </div>
       <div className="flex space-x-6">
         <div className="flex items-center text-white">
-          <h3 className="font-bold mr-3">John Doe</h3>
+          <h3 className="font-bold mr-3">{auth.currentUser?.displayName}</h3>
           <img
-            src="https://randomuser.me/api/portraits/men/75.jpg"
+            src={auth.currentUser?.photoURL || ''}
             width="36"
             height="36"
             className="object-cover rounded-full"

@@ -1,18 +1,12 @@
-import React from "react";
-import {
-  PlusIcon,
-  ChatBubbleLeftEllipsisIcon,
-  PaperClipIcon,
-} from "@heroicons/react/24/outline";
-import CardLabel from "../CardLabel/CardLabel";
-import { Item } from "../../Types/KanbanBoard.types";
+import React from 'react';
+import { PlusIcon, ChatBubbleLeftEllipsisIcon, PaperClipIcon } from '@heroicons/react/24/outline';
+import CardLabel from '../CardLabel/CardLabel';
+import { Item } from '../../Types/KanbanBoard.types';
 import {
   Draggable,
-  DraggableStyle,
   DraggableStateSnapshot,
-  DraggableProps,
-  DraggableProvidedDraggableProps,
-} from "@hello-pangea/dnd";
+  DraggableProvidedDraggableProps
+} from '@hello-pangea/dnd';
 
 type ItemProps = {
   cardItem: Item;
@@ -20,29 +14,22 @@ type ItemProps = {
 };
 
 const Card: React.FC<ItemProps> = ({ cardItem, index }) => {
-  const rotate = "rotate(-5deg)";
-
   const getItemStyle = (
     snapshot: DraggableStateSnapshot,
     draggableStyle: DraggableProvidedDraggableProps
   ) => ({
     ...draggableStyle.style,
-    opacity: snapshot.isDragging ? ".7" : "1",
+    opacity: snapshot.isDragging ? '.7' : '1'
   });
 
   return (
-    <Draggable
-      index={index}
-      draggableId={cardItem.id.toString()}
-      key={cardItem.id}
-    >
+    <Draggable index={index} draggableId={cardItem.id.toString()} key={cardItem.id}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          style={getItemStyle(snapshot, provided.draggableProps)}
-        >
+          style={getItemStyle(snapshot, provided.draggableProps)}>
           <div className="bg-white rounded-md p-3 m-3 shadow-md select-none">
             <CardLabel priority={cardItem.priority} />
             <h5 className="text-md my-3 text-lg leading-6">{cardItem.title}</h5>
@@ -75,8 +62,7 @@ const Card: React.FC<ItemProps> = ({ cardItem, index }) => {
                   <button
                     className="border border-dashed flex items-center w-8 h-8 border-gray-500 justify-center
 rounded-full"
-                    title="Assign user "
-                  >
+                    title="Assign user ">
                     <PlusIcon className="w-5 h-5 text-gray-500" />
                   </button>
                 </li>
@@ -91,7 +77,7 @@ rounded-full"
 
 export default Card;
 
-fetch("books")
+fetch('books')
   .then((response) => response.json())
   .then((data) => console.log(data))
   .catch((error) => console.error(error));

@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { auth } from "../../services/AuthentificationService";
-import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from '../../services/AuthentificationService';
+import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
-import Alert from "../Alert/Alert";
+import Alert from '../Alert/Alert';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,23 +21,20 @@ const Login = () => {
 
     await signInWithEmailAndPassword(
       auth,
-      emailRef.current?.value!,
-      passwordRef.current?.value!
+      emailRef.current?.value || '',
+      passwordRef.current?.value || ''
     )
       .then((userCredential) => {
+        // TODO: check this line and use the credentials from the AuthContext Provider
         const user = userCredential.user;
-        navigate("/board");
-        // ...
+        navigate('/board');
       })
       .catch((error) => {
-        const [errorCode, errorMessage] = [error.code, error.message];
-
-        console.log(errorCode, errorMessage);
-        if (errorCode === "auth/user-not-found") {
-          setError("User not found");
+        if (error.code === 'auth/user-not-found') {
+          setError('User not found');
         }
-        if (errorCode === "auth/wrong-password") {
-          setError("Wrong password");
+        if (error.code === 'auth/wrong-password') {
+          setError('Wrong password');
         }
       })
       .finally(() => {
@@ -45,10 +42,10 @@ const Login = () => {
       });
 
     await updateProfile(auth.currentUser!, {
-      displayName: "Daniel Brzezinski",
-      photoURL: "https://i.ibb.co/wWcBXy2/daniel36x36.jpg",
+      displayName: 'Daniel Brzezinski',
+      photoURL: 'https://i.ibb.co/wWcBXy2/daniel36x36.jpg'
     }).then(() => {
-      console.log("Profile updated");
+      console.log('Profile updated');
     });
   };
 
@@ -64,8 +61,7 @@ const Login = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Your email
                 </label>
                 <input
@@ -81,8 +77,7 @@ const Login = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Password
                 </label>
                 <input
@@ -98,16 +93,13 @@ const Login = () => {
               <button
                 type="submit"
                 className="w-full text-white bg-sky-700 hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                disabled={loading}
-              >
+                disabled={loading}>
                 Sign in
               </button>
             </form>
           </div>
         </div>
-        {error && (
-          <Alert alertType="error" alertTitle="Error" alertMessage={error} />
-        )}
+        {error && <Alert alertType="error" alertTitle="Error" alertMessage={error} />}
       </div>
     </section>
   );

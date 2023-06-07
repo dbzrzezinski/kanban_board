@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import { Route, Navigate, RouteProps } from "react-router-dom";
-import { auth } from "../services/AuthentificationService";
+import { Navigate, RouteProps } from 'react-router-dom';
+import { auth } from '../services/AuthentificationService';
 
 type ProtectedRouteProps = {
   children: JSX.Element;

@@ -1,22 +1,23 @@
 // basic stuff
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { Board as TBoard, Item } from "../../Types/KanbanBoard.types";
+import { Board as TBoard, Item } from '../../Types/KanbanBoard.types';
 
 // static stuff
-import { ApiMockResponse as BoardDataMock } from "../../ApiMockData/dummyData";
-import { users } from "../../MockData/users";
-import { STORAGE_KEY_BOARD_DATA } from "../../Constants/Constants";
+import { ApiMockResponse as BoardDataMock } from '../../ApiMockData/dummyData';
+import { users } from '../../MockData/users';
 
 // 3rd party librarys
-import { ChevronUpIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
+import { ChevronUpIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 
 // components
-import Layout from "../../components/Layout/Layout";
-import Lane from "../../components/Lane/Lane";
-import { canUseDOM } from "../../Helper/Dom";
-import { Modal } from "../../components/Modal/Modal";
+import Layout from '../../components/Layout/Layout';
+import Lane from '../../components/Lane/Lane';
+import { canUseDOM } from '../../Helper/Dom';
+import { Modal } from '../../components/Modal/Modal';
+import { auth } from '../../services/AuthentificationService';
+import { StorageService } from '../../services/StorageService';
 
 const Board = () => {
   const [boardData, setBoardData] = useState<TBoard[]>([]);
@@ -35,9 +36,7 @@ const Board = () => {
         setBoardData(BoardDataMock);
         setFilteredBoardData(BoardDataMock);
       } else {
-        const storageItem = JSON.parse(
-          localStorage.getItem(STORAGE_KEY_BOARD_DATA) || "[]"
-        );
+        const storageItem = JSON.parse(StorageService.getItem('kanban_board') || '[]');
         if (Array.isArray(storageItem) && storageItem.length !== 0) {
           setBoardData(storageItem);
           setFilteredBoardData(storageItem);
@@ -48,8 +47,8 @@ const Board = () => {
   }, []);
 
   useEffect(() => {
-    if (typeof boardData !== "undefined") {
-      localStorage.setItem(STORAGE_KEY_BOARD_DATA, JSON.stringify(boardData));
+    if (typeof boardData !== 'undefined') {
+      StorageService.setItem('kanban_board', JSON.stringify(boardData));
     }
   }, [boardData]);
 
@@ -58,14 +57,15 @@ const Board = () => {
    * @param inputValue string
    */
   const handleSearchInputChange = (inputValue: string) => {
-    const boardCopy = boardData.slice();
+    // create deep copy of boardData
+    const copyBoardData = JSON.parse(JSON.stringify(boardData)) as TBoard[];
 
-    if (inputValue === "") {
-      setFilteredBoardData(boardCopy);
+    if (inputValue === '') {
+      setFilteredBoardData(copyBoardData);
       return;
     }
 
-    const results = boardCopy?.filter((boardLane) => {
+    const results = copyBoardData?.filter((boardLane) => {
       boardLane.items = boardLane.items.filter((item) => {
         if (item.title.toLowerCase().includes(inputValue.toLowerCase())) {
           return item;
@@ -82,21 +82,14 @@ const Board = () => {
       return;
     }
 
-    let newBoardData = [...boardData];
-    let { droppableId, index } = dragDropElement.source;
+    const newBoardData = [...boardData];
+    const { droppableId, index } = dragDropElement.source;
 
     if (newBoardData) {
-      const draggedItem = newBoardData[Number(droppableId)].items.splice(
-        index,
-        1
-      );
+      const draggedItem = newBoardData[Number(droppableId)].items.splice(index, 1);
       const destinationDropId = dragDropElement.destination.droppableId;
       const destinationIndex = dragDropElement.destination.index;
-      newBoardData[parseInt(destinationDropId)].items.splice(
-        destinationIndex,
-        0,
-        ...draggedItem
-      );
+      newBoardData[parseInt(destinationDropId)].items.splice(destinationIndex, 0, ...draggedItem);
       setBoardData(newBoardData);
       setFilteredBoardData(newBoardData);
     }
@@ -106,6 +99,15 @@ const Board = () => {
     const newBoardData = [...boardData];
 
     if (showAddTaskFormLane !== -1 && newBoardData) {
+      const assigneeData: Item['assignees'][number] = { avatar: '', name: '' };
+
+      if (auth.currentUser?.photoURL) {
+        assigneeData.avatar = auth.currentUser?.photoURL;
+      }
+      if (auth.currentUser?.displayName && item.assignees.length === 0) {
+        assigneeData.name = auth.currentUser?.displayName;
+      }
+      item.assignees.push(assigneeData);
       newBoardData[showAddTaskFormLane].items.push(item);
 
       setBoardData(newBoardData);
@@ -121,13 +123,11 @@ const Board = () => {
             <div className="p-10">
               <div className="flex flex-initial justify-between flex-col lg:flex-row">
                 <div className="flex items-center justify-center md:justify-start">
-                  <h4 className="text-3xl font-bold text-gray-600">
-                    Kanban Board
-                  </h4>
+                  <h4 className="text-3xl font-bold text-gray-600">Kanban Board</h4>
                   <button onClick={() => setShowBoard(!showBoard)}>
                     <ChevronUpIcon
                       className={`${
-                        showBoard ? "rotate-180" : ""
+                        showBoard ? 'rotate-180' : ''
                       } w-7 h-7 text-gray-600 rounded-full bg-white p-2 ml-2 mt-1 hover:cursor-pointer`}
                     />
                   </button>
@@ -136,7 +136,7 @@ const Board = () => {
                 <div className="mt-8 lg:mt-0 ">
                   <ul className="flex space-x-3 justify-center md:justify-start">
                     {/* Show some random ids/user portraits */}
-                    {users.map((person, index) => (
+                    {users.map((person) => (
                       <li key={person.id}>
                         <img
                           src={`https://randomuser.me/api/portraits/men/${person.id}.jpg`}
@@ -160,32 +160,25 @@ const Board = () => {
                 {showBoard && (
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-5 my-5">
                     {filteredBoardData &&
-                      filteredBoardData.map(
-                        (laneData: Board, index: number) => (
-                          <Droppable droppableId={index.toString()} key={index}>
-                            {(provided) => (
-                              <div>
-                                <div
-                                  {...provided.droppableProps}
-                                  ref={provided.innerRef}
-                                >
-                                  <Lane
-                                    laneData={laneData}
-                                    droppableProvider={provided}
-                                    showAddTaskFormLane={showAddTaskFormLane}
-                                    submitNewTask={handleSubmitNewTask}
-                                    setShowAddTaskFormLane={
-                                      setShowAddTaskFormLane
-                                    }
-                                    laneIndex={index}
-                                  />
-                                </div>
-                                {provided.placeholder}
+                      filteredBoardData.map((laneData: Board, index: number) => (
+                        <Droppable droppableId={index.toString()} key={index}>
+                          {(provided) => (
+                            <div>
+                              <div {...provided.droppableProps} ref={provided.innerRef}>
+                                <Lane
+                                  laneData={laneData}
+                                  droppableProvider={provided}
+                                  showAddTaskFormLane={showAddTaskFormLane}
+                                  submitNewTask={handleSubmitNewTask}
+                                  setShowAddTaskFormLane={setShowAddTaskFormLane}
+                                  laneIndex={index}
+                                />
                               </div>
-                            )}
-                          </Droppable>
-                        )
-                      )}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      ))}
                   </div>
                 )}
               </DragDropContext>

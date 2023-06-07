@@ -1,1 +1,1 @@
-export const STORAGE_KEY_BOARD_DATA = "kanban_board";
+export const LOCAL_STORAGE_KEYS = ["kanban_board"] as const;
