@@ -53,10 +53,6 @@ const Board = () => {
     }
   }, [boardData]);
 
-  /**
-   * Filter
-   * @param inputValue string
-   */
   const handleSearchInputChange = (inputValue: string) => {
     // create deep copy of boardData
     const copyBoardData = JSON.parse(JSON.stringify(boardData)) as TBoard[];
