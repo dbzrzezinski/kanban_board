@@ -1,10 +1,10 @@
-import React, { ReactElement, useState, useRef, useEffect } from "react";
-import { PlusIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import Card from "../Card/Card";
-import { generateUUID } from "../../Helper/Util";
-import CardLabel from "../CardLabel/CardLabel";
-import { Board, Item } from "../../Types/KanbanBoard.types";
-import { DroppableProvided } from "@hello-pangea/dnd";
+import React, { ReactElement, useState, useRef, useEffect } from 'react';
+import { PlusIcon, EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import Card from '../Card/Card';
+import { generateUUID } from '../../Helper/Util';
+import CardLabel from '../CardLabel/CardLabel';
+import { Board, Item } from '../../Types/KanbanBoard.types';
+import { DroppableProvided } from '@hello-pangea/dnd';
 
 type LaneProps = {
   laneData: Board;
@@ -21,7 +21,7 @@ const Lane: React.FC<LaneProps> = ({
   showAddTaskFormLane,
   setShowAddTaskFormLane,
   submitNewTask,
-  laneIndex,
+  laneIndex
 }): ReactElement => {
   const [priority, setPriority] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -33,19 +33,19 @@ const Lane: React.FC<LaneProps> = ({
   }, [showAddTaskFormLane]);
 
   const handleKeypress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.code === "Escape") {
+    if (event.code === 'Escape') {
       setShowAddTaskFormLane!(-1);
     }
 
     const value = (event.target as HTMLTextAreaElement).value;
-    if (event.code === "Enter" && value.trim() !== "") {
+    if (event.code === 'Enter' && value.trim() !== '') {
       const newItem = {
         id: generateUUID(),
         priority: priority,
         title: value,
         chat: 0,
         attachment: 0,
-        assignees: [],
+        assignees: []
       };
       submitNewTask!(newItem);
       setPriority(0);
@@ -58,9 +58,7 @@ const Lane: React.FC<LaneProps> = ({
       <h4 className="p-3 flex justify-between items-center">
         <div className="text-2xl text-gray-600">
           {laneData.name}
-          <span className="text-gray-500 text-sm ml-2">
-            ({laneData.items.length})
-          </span>
+          <span className="text-gray-500 text-sm ml-2">({laneData.items.length})</span>
         </div>
 
         <button>
@@ -70,8 +68,7 @@ const Lane: React.FC<LaneProps> = ({
 
       <div
         className="overflow-y-auto overflow-x-hidden h-auto"
-        style={{ maxHeight: "calc(100vh - 290px)" }}
-      >
+        style={{ maxHeight: 'calc(100vh - 290px)' }}>
         {laneData.items.map((item, index) => (
           <Card cardItem={item} key={index} index={index} />
         ))}
@@ -85,20 +82,15 @@ const Lane: React.FC<LaneProps> = ({
             className="border-gray-300 rounded w-full"
             rows={3}
             placeholder="task description"
-            onKeyDown={handleKeypress}
-          ></textarea>
-          <div
-            onClick={() => setPriority(priority >= 2 ? 0 : priority + 1)}
-            className="hover:cursor-pointer"
-          >
-            <CardLabel priority={priority} />
+            onKeyDown={handleKeypress}></textarea>
+          <div onClick={() => setPriority(priority >= 2 ? 0 : priority + 1)}>
+            <CardLabel priority={priority} className="block text-center hover:cursor-pointer" />
           </div>
         </div>
       ) : (
         <button
           className="flex justify-center items-center my-3 space-x-2 text-gray-600 text-sm"
-          onClick={() => setShowAddTaskFormLane(laneIndex)}
-        >
+          onClick={() => setShowAddTaskFormLane(laneIndex)}>
           <span>Add task</span>
           <PlusIcon className="w-4 h-4 text-gray-600" />
         </button>

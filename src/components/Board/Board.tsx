@@ -1,6 +1,6 @@
 // basic stuff
-import { useEffect, useState } from 'react';
-
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../../Contexts/AuthContext';
 import { Board as TBoard, Item } from '../../Types/KanbanBoard.types';
 
 // static stuff
@@ -16,7 +16,6 @@ import Layout from '../../components/Layout/Layout';
 import Lane from '../../components/Lane/Lane';
 import { canUseDOM } from '../../Helper/Dom';
 import { Modal } from '../../components/Modal/Modal';
-import { auth } from '../../services/AuthentificationService';
 import { StorageService } from '../../services/StorageService';
 
 const Board = () => {
@@ -26,6 +25,8 @@ const Board = () => {
   const [showAddTaskFormLane, setShowAddTaskFormLane] = useState<number>(-1);
   const [filteredBoardData, setFilteredBoardData] = useState<TBoard[]>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     if (canUseDOM()) {
@@ -101,11 +102,11 @@ const Board = () => {
     if (showAddTaskFormLane !== -1 && newBoardData) {
       const assigneeData: Item['assignees'][number] = { avatar: '', name: '' };
 
-      if (auth.currentUser?.photoURL) {
-        assigneeData.avatar = auth.currentUser?.photoURL;
+      if (user?.photoURL) {
+        assigneeData.avatar = user?.photoURL;
       }
-      if (auth.currentUser?.displayName && item.assignees.length === 0) {
-        assigneeData.name = auth.currentUser?.displayName;
+      if (user?.displayName && item.assignees.length === 0) {
+        assigneeData.name = user?.displayName;
       }
       item.assignees.push(assigneeData);
       newBoardData[showAddTaskFormLane].items.push(item);

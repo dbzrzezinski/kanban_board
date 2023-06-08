@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { auth } from '../../services/AuthentificationService';
-import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { firebaseAuth, firebaseApp } from '../../services/AuthentificationService';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { ref, update, getDatabase, serverTimestamp } from 'firebase/database';
 
 import Alert from '../Alert/Alert';
 
@@ -20,13 +21,18 @@ const Login = () => {
     setLoading(true);
 
     await signInWithEmailAndPassword(
-      auth,
+      firebaseAuth,
       emailRef.current?.value || '',
       passwordRef.current?.value || ''
     )
       .then((userCredential) => {
-        // TODO: check this line and use the credentials from the AuthContext Provider
-        const user = userCredential.user;
+        const { user } = userCredential;
+        const db = getDatabase(firebaseApp);
+        // update user last login timestamp
+        update(ref(db, 'users/' + user.uid), {
+          lastLogin: serverTimestamp()
+        });
+
         navigate('/board');
       })
       .catch((error) => {
@@ -40,13 +46,6 @@ const Login = () => {
       .finally(() => {
         setLoading(false);
       });
-
-    await updateProfile(auth.currentUser!, {
-      displayName: 'Daniel Brzezinski',
-      photoURL: 'https://i.ibb.co/wWcBXy2/daniel36x36.jpg'
-    }).then(() => {
-      console.log('Profile updated');
-    });
   };
 
   return (
