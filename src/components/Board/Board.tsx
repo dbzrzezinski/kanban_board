@@ -157,7 +157,7 @@ const Board = () => {
                 {showBoard && (
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-5 my-5">
                     {filteredBoardData &&
-                      filteredBoardData.map((laneData: Board, index: number) => (
+                      filteredBoardData.map((laneData: TBoard, index: number) => (
                         <Droppable droppableId={index.toString()} key={index}>
                           {(provided) => (
                             <div>
