@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../config/firebaseConfig';
 
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth, signOut, updateProfile } from 'firebase/auth';
 
 // init firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -17,4 +17,16 @@ const logout = async () => {
   }
 };
 
-export { firebaseApp, firebaseAuth, logout };
+const updateUserName = async (name: string) => {
+  const user = firebaseAuth.currentUser;
+
+  const updateObject = {
+    displayName: name
+  };
+
+  if (user) {
+    updateProfile(user, updateObject);
+  }
+};
+
+export { firebaseApp, firebaseAuth, logout, updateUserName };

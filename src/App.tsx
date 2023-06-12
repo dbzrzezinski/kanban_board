@@ -25,7 +25,7 @@ function App() {
           uuid: user.uid,
           username: user.displayName,
           email: user.email,
-          profile_picture: user.photoURL,
+          photoUrl: user.photoURL,
           lastLogin: serverTimestamp(),
           banned: false
         }).catch((error) => {
@@ -48,6 +48,7 @@ function App() {
             }
           />
           <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </AuthContextProvider>

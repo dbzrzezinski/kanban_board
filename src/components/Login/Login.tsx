@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { ref, update, getDatabase, serverTimestamp } from 'firebase/database';
 
 import Alert from '../Alert/Alert';
+import { updateUser } from '../../services/UserService';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,14 +26,10 @@ const Login = () => {
       emailRef.current?.value || '',
       passwordRef.current?.value || ''
     )
-      .then((userCredential) => {
-        const { user } = userCredential;
-        const db = getDatabase(firebaseApp);
-        // update user last login timestamp
-        update(ref(db, 'users/' + user.uid), {
-          lastLogin: serverTimestamp()
+      .then(() => {
+        updateUser({
+          lastLogin: Math.floor(Date.now() / 1000)
         });
-
         navigate('/board');
       })
       .catch((error) => {
