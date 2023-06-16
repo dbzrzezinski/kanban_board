@@ -9,6 +9,8 @@ import React, {
 import { useNavigate } from 'react-router-dom';
 import { MagnifyingGlassIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
 import { Modal } from '../Modal/Modal';
+import { ImageUpload } from '../ImageUpload/ImageUpload';
+import { UserIcon } from '@heroicons/react/24/outline';
 
 import { logout, updateUserName } from '../../services/AuthentificationService';
 import { AuthContext } from '../../Contexts/AuthContext';
@@ -59,14 +61,22 @@ const Topbar: React.FC<TopbarProps> = ({ setSearchValue }) => {
         onClick={() => setIsLogoutModalOpen(!isLogoutModalOpen)}>
         <div className="flex items-center text-white">
           <h3 className="font-bold mr-3">{username}</h3>
-          <img
-            src={user?.photoURL || ''}
-            width="36"
-            height="36"
-            className="object-cover rounded-full"
-            alt={username}
-            title={`${'Logged in as'} ${username}`}
-          />
+
+          {user?.photoURL && (
+            <img
+              src={user?.photoURL || ''}
+              width="36"
+              height="36"
+              className="object-cover rounded-full"
+              alt={username}
+              title={`${'Logged in as'} ${username}`}
+            />
+          )}
+          {!user?.photoURL && (
+            <div className="rounded-full border-white border-2">
+              <UserIcon className="w-8 h-8 p-1" />
+            </div>
+          )}
         </div>
       </div>
       <Modal
@@ -93,6 +103,8 @@ const Topbar: React.FC<TopbarProps> = ({ setSearchValue }) => {
             </div>
           </div>
         </form>
+
+        <ImageUpload />
 
         <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-500" />
         <button

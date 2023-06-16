@@ -111,7 +111,6 @@ const Board = () => {
       setFilteredBoardData(newBoardData);
     }
   };
-
   return (
     <>
       <div className="min-w-full min-h-screen" id="App">
