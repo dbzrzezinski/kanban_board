@@ -1,9 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { firebaseAuth, firebaseApp } from '../../services/AuthentificationService';
+import { firebaseAuth } from '../../services/AuthentificationService';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { ref, update, getDatabase, serverTimestamp } from 'firebase/database';
 
 import Alert from '../Alert/Alert';
 import { updateUser } from '../../services/UserService';
@@ -95,7 +94,11 @@ const Login = () => {
             </form>
           </div>
         </div>
-        {error && <Alert alertType="error" alertTitle="Error" alertMessage={error} />}
+        {error && (
+          <div className="sm:max-w-md w-full">
+            <Alert alertType="error" alertTitle="Error" alertMessage={error} />
+          </div>
+        )}
       </div>
     </section>
   );

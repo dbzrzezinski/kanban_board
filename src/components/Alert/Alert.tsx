@@ -39,7 +39,7 @@ const Alert: React.FC<AlertProps> = ({ alertType, alertTitle, alertMessage, hide
             'border'
           )} rounded-b ${alertClass(
             'headlineText'
-          )} px-4 py-3 shadow-md mt-3 sm:max-w-md p-0 w-full rounded-md`}
+          )} m-auto px-4 py-3 shadow-md mt-3 sm:max-w-md md:max-w-lg p-0 w-full rounded-md`}
           role="alert">
           <div className="flex">
             <div className="py-1">
